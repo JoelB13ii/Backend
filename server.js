@@ -1,13 +1,12 @@
-const express = require('express');
+// backend/server.js
 const mongoose = require('mongoose');
-
-// Initialize the app
+const express = require('express');
+const cors = require('cors')
 const app = express();
+app.use(cors())
 const port = 5000;
 
-app.use(express.json());
-
-// Updated connection string with 'Webstore' database
+// MongoDB connection URI
 const dbURI = 'mongodb+srv://joelbinny2003:Joel0144@cluster0.gprvzai.mongodb.net/Webstore';
 
 // Connect to MongoDB
@@ -19,50 +18,13 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     console.error('Error connecting to MongoDB:', err);
   });
 
-const productSchema = new mongoose.Schema({
-    title: String,
-    description: String,
-    price: Number,
-    image: String,
-    availableInventory: Number,
-    rating: Number,
-    location: String,
-}, { collection: 'Products' });
+// Import the routes from lessons.js (updated path)
+const lessonsRoutes = require('./lessons');
 
-const Product = mongoose.model('Product', productSchema);
+// Use the routes in the app
+app.use(lessonsRoutes);
 
-// Test route
-app.get('/', (req, res) => {
-    res.send('Backend is working!');
-});
-
-// Products route
-app.get('/products', async (req, res) => {
-    try {
-        console.log('Attempting to fetch products from Webstore/Products...');
-        const products = await Product.find();
-        console.log('Number of products found:', products.length);
-        console.log('Fetched products:', products);
-        res.json(products);
-    } catch (err) {
-        console.error('Error fetching products:', err);
-        res.status(500).send('Error fetching products: ' + err);
-    }
-});
-
-// Debug route
-app.get('/debug', async (req, res) => {
-    try {
-        const collections = await mongoose.connection.db.listCollections().toArray();
-        res.json({
-            database: mongoose.connection.db.databaseName,
-            collections: collections.map(c => c.name)
-        });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
+// Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
