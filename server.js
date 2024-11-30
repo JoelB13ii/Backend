@@ -22,20 +22,28 @@ MongoClient.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch((err) => {
     console.error('Error connecting to MongoDB:', err);
   });
-  app.use('/static', express.static(path.join(__dirname, 'Static')));
+
+app.use('/static', express.static(path.join(__dirname, 'Static')));
+
 // Middleware to pass the database to routes
 app.use((req, res, next) => {
   req.db = db;
   next();
 });
 
+// Check if the backend is working (Health check)
+app.get('/', (req, res) => {
+  res.send('Backend is running!');
+});
+
 // Import the routes from lessons.js (updated to support MongoDB driver)
 const lessonsRoutes = require('./lessons');
-const ordersRoutes = require('./addOrder');
+const addOrderRoutes = require('./addOrder');
+app.use(addOrderRoutes);
 
 // Use the routes in the app
 app.use(lessonsRoutes);
-app.use(ordersRoutes);
+app.use(addOrderRoutes);
 
 // Start the server
 app.listen(port, () => {
