@@ -13,7 +13,6 @@ router.put('/updateStock', async (req, res) => {
 
   // still not working
 
-  
   try {
     // Loop through each item in the cart
     for (const item of cartItems) {
