@@ -39,11 +39,14 @@ app.get('/', (req, res) => {
 // Import the routes from lessons.js (updated to support MongoDB driver)
 const lessonsRoutes = require('./lessons');
 const addOrderRoutes = require('./addOrder');
-app.use(addOrderRoutes);
+const updateStockRoutes = require('./updateStock');
+
+
 
 // Use the routes in the app
 app.use(lessonsRoutes);
 app.use(addOrderRoutes);
+app.use(updateStockRoutes);
 
 // Start the server
 app.listen(port, () => {
