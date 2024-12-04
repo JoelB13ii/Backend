@@ -41,8 +41,6 @@ const lessonsRoutes = require('./lessons');
 const addOrderRoutes = require('./addOrder');
 const updateStockRoutes = require('./updateStock');
 
-
-
 // Use the routes in the app
 app.use(lessonsRoutes);
 app.use(addOrderRoutes);
