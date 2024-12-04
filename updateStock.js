@@ -10,6 +10,10 @@ router.put('/updateStock', async (req, res) => {
     return res.status(400).json({ message: 'cartItems must be a non-empty array' });
   }
 
+
+  // still not working
+
+  
   try {
     // Loop through each item in the cart
     for (const item of cartItems) {
